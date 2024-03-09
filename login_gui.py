@@ -89,7 +89,7 @@ class LoginWindow(QWidget):
                 )
                 self.login_is_successful = True
                 self.close()
-                # self.openMainWindow()
+                self.openMainWindow()
             else:
                 QMessageBox.warning(
                     self,
@@ -130,6 +130,10 @@ class LoginWindow(QWidget):
         else:
             self.password_edit.setEchoMode(QLineEdit.EchoMode.Password)
 
+    def openMainWindow(self):
+        self.main_window = MainWindow()
+        self.main_window.show()
+
 
 class MainWindow(QWidget):
     """Клас для головного вікна"""
@@ -140,13 +144,21 @@ class MainWindow(QWidget):
 
     def initializeUI(self):
         """Налаштування застосунку"""
-        self.setMinimumSize(600, 400)
+        self.setMinimumSize(500, 500)
         self.setWindowTitle("Головне вікно")
         self.setUpMainWindow()
-        self.show()
 
     def setUpMainWindow(self):
-        pass
+        image = "images/python_whale.jpg"
+
+        try:
+            with open(image):
+                main_label = QLabel(self)
+                pixmap = QPixmap(image)
+                main_label.setPixmap(pixmap)
+                main_label.move(0, 0)
+        except FileNotFoundError as error:
+            print(f"Image not found.\nError: {error}")
 
 
 # Запуск програми
