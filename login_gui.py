@@ -10,7 +10,9 @@ from PyQt6.QtWidgets import (
     QMessageBox,
 )
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QCloseEvent, QFont, QPixmap
+from PyQt6.QtGui import QFont, QPixmap
+
+from registration import NewUserDialog
 
 
 class LoginWindow(QWidget):
@@ -63,7 +65,7 @@ class LoginWindow(QWidget):
 
         sign_up_button = QPushButton("Зареєструватися", self)
         sign_up_button.move(120, 180)
-        # sign_up_button.clicked.connect(self.createNewUser)
+        sign_up_button.clicked.connect(self.createNewUser)
 
     def clickLoginButton(self):
         users = {}
@@ -123,6 +125,10 @@ class LoginWindow(QWidget):
                 event.accept()
             else:
                 event.ignore()
+
+    def createNewUser(self):
+        self.new_user_window = NewUserDialog()
+        self.new_user_window.show()
 
     def displayPasswordIfChecked(self, checked):
         if checked:
