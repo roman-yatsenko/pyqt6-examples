@@ -131,6 +131,24 @@ class LoginWindow(QWidget):
             self.password_edit.setEchoMode(QLineEdit.EchoMode.Password)
 
 
+class MainWindow(QWidget):
+    """Клас для головного вікна"""
+
+    def __init__(self):
+        super().__init__()
+        self.initializeUI()
+
+    def initializeUI(self):
+        """Налаштування застосунку"""
+        self.setMinimumSize(600, 400)
+        self.setWindowTitle("Головне вікно")
+        self.setUpMainWindow()
+        self.show()
+
+    def setUpMainWindow(self):
+        pass
+
+
 # Запуск програми
 if __name__ == "__main__":
     app = QApplication(sys.argv)
