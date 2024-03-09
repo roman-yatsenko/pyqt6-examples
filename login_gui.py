@@ -10,7 +10,7 @@ from PyQt6.QtWidgets import (
     QMessageBox,
 )
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFont, QPixmap
+from PyQt6.QtGui import QCloseEvent, QFont, QPixmap
 
 
 class LoginWindow(QWidget):
@@ -107,6 +107,22 @@ class LoginWindow(QWidget):
                 QMessageBox.StandardButton.Ok,
             )
             f = open(file, "w", encoding="UTF8")
+
+    def closeEvent(self, event):
+        if self.login_is_successful:
+            event.accept()
+        else:
+            answer = QMessageBox.question(
+                self,
+                "Закрити застосунок",
+                "Ви впевнені, що хочете закрити програму?",
+                QMessageBox.StandardButton.No | QMessageBox.StandardButton.Yes,
+                QMessageBox.StandardButton.Yes,
+            )
+            if answer == QMessageBox.StandardButton.Yes:
+                event.accept()
+            else:
+                event.ignore()
 
     def displayPasswordIfChecked(self, checked):
         if checked:
