@@ -51,7 +51,7 @@ class LoginWindow(QWidget):
 
         self.show_password_cb = QCheckBox("Показати пароль", self)
         self.show_password_cb.move(90, 110)
-        # self.show_password_cb.toggled.connect(self.displayPasswordIfChecked)
+        self.show_password_cb.toggled.connect(self.displayPasswordIfChecked)
 
         login_button = QPushButton("Login", self)
         login_button.resize(260, 34)
@@ -107,6 +107,12 @@ class LoginWindow(QWidget):
                 QMessageBox.StandardButton.Ok,
             )
             f = open(file, "w", encoding="UTF8")
+
+    def displayPasswordIfChecked(self, checked):
+        if checked:
+            self.password_edit.setEchoMode(QLineEdit.EchoMode.Normal)
+        else:
+            self.password_edit.setEchoMode(QLineEdit.EchoMode.Password)
 
 
 # Запуск програми
