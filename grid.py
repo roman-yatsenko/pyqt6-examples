@@ -10,7 +10,7 @@ from PyQt6.QtWidgets import (
     QTextEdit,
     QGridLayout,
 )
-from PyQt6.QtCore import Qt, QDate
+from PyQt6.QtCore import Qt, QDate, QLocale
 from PyQt6.QtGui import QFont
 
 
@@ -49,7 +49,7 @@ class MainWindow(QWidget):
         self.main_grid.addWidget(notes_label, 5, 0)
         self.main_grid.addWidget(self.notes_tedit, 6, 0, 3, 1)
 
-        today = QDate.currentDate().toString(Qt.DateFormat.TextDate)
+        today = QLocale().toString(QDate.currentDate())
         date_label = QLabel(today)
         date_label.setFont(QFont("Arial", 18))
         date_label.setAlignment(Qt.AlignmentFlag.AlignRight)
