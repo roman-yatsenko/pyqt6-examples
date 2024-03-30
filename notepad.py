@@ -53,6 +53,10 @@ class MainWindow(QMainWindow):
         self.save_act.setShortcut("Ctrl+S")
         # self.save_act.triggered.connect(self.saveToFile)
 
+        self.undo_act = QAction(QIcon("images/undo.png"), "Скасувати")
+        self.undo_act.setShortcut("Ctrl+Z")
+        self.undo_act.triggered.connect(self.text_edit.undo)
+
     def createMenu(self):
         """Налаштування меню"""
         self.menuBar().setNativeMenuBar(False)
