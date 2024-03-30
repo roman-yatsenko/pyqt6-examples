@@ -96,10 +96,16 @@ class MainWindow(QWidget):
         self.setLayout(main_form)
 
     def clearText(self, text):
-        pass
+        """Видалення тексту зворотного зв'язку"""
+        self.feedback_label.clear()
 
     def checkFormInformation(self):
-        pass
+        if self.first_name_edit.text() == "" or self.last_name_edit.text() == "":
+            self.feedback_label.setText("[INFO] Прощено імена")
+        elif not self.phone_edit.hasAcceptableInput():
+            self.feedback_label.setText("[INFO] Неправильно введено номер телефону")
+        elif "@" not in self.email_edit.text():
+            self.feedback_label.setText("[INFO] Email введено неправильно")
 
 
 # Запуск програми
