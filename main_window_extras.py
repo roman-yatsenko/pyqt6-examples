@@ -27,7 +27,7 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(450, 350)
         self.setWindowTitle("MainWindow")
         self.setUpMainWindow()
-        # self.createDockWidget()
+        self.createDockWidget()
         self.createActions()
         self.createMenu()
         self.createToolBar()
@@ -73,6 +73,32 @@ class MainWindow(QMainWindow):
         self.addToolBar(toolbar)
 
         toolbar.addAction(self.quit_act)
+
+    def createDockWidget(self):
+        dock_widget = QDockWidget()
+        dock_widget.setWindowTitle("Форматування")
+        dock_widget.setAllowedAreas(Qt.DockWidgetArea.AllDockWidgetAreas)
+
+        auto_bullet_cb = QCheckBox("Автоматичний неупорядкований список")
+        auto_bullet_cb.toggled.connect(self.changeTextEditSettings)
+
+        dock_v_box = QVBoxLayout()
+        dock_v_box.addWidget(auto_bullet_cb)
+        dock_v_box.addStretch(1)
+
+        dock_container = QWidget()
+        dock_container.setLayout(dock_v_box)
+
+        dock_widget.setWidget(dock_container)
+        self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, dock_widget)
+
+    def changeTextEditSettings(self, checked):
+        if checked:
+            self.text_edit.setAutoFormatting(
+                QTextEdit.AutoFormattingFlag.AutoBulletList
+            )
+        else:
+            self.text_edit.setAutoFormatting(QTextEdit.AutoFormattingFlag.AutoNone)
 
 
 # Запуск програми
