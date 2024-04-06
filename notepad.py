@@ -80,15 +80,15 @@ class MainWindow(QMainWindow):
 
         self.font_act = QAction(QIcon("images/font.png"), "Шрифт")
         self.font_act.setShortcut("Ctrl+T")
-        # self.font_act.triggered.connect(self.chooseFont)
+        self.font_act.triggered.connect(self.chooseFont)
 
         self.color_act = QAction(QIcon("images/color.png"), "Колір")
         self.color_act.setShortcut("Ctrl+Shift+C")
-        # self.color_act.triggered.connect(self.chooseFontColor)
+        self.color_act.triggered.connect(self.chooseFontColor)
 
         self.highlight_act = QAction(QIcon("images/highlight.png"), "Виділити")
         self.highlight_act.setShortcut("Ctrl+Shift+H")
-        # self.color_act.triggered.connect(self.chooseFontBackgroundColor)
+        self.highlight_act.triggered.connect(self.chooseFontBackgroundColor)
 
         self.about_act = QAction("Про програму")
         # self.about_act.connect(self.aboutDialog)
@@ -178,6 +178,23 @@ class MainWindow(QMainWindow):
 
     def removeHighlights(self):
         self.text_edit.setExtraSelections([])
+
+    def chooseFont(self):
+        current = self.text_edit.currentFont()
+        opt = QFontDialog.FontDialogOption.DontUseNativeDialog
+        font, ok = QFontDialog.getFont(current, self, options=opt)
+        if ok:
+            self.text_edit.setCurrentFont(font)
+
+    def chooseFontColor(self):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            self.text_edit.setTextColor(color)
+
+    def chooseFontBackgroundColor(self):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            self.text_edit.setTextBackgroundColor(color)
 
 
 # Запуск програми
