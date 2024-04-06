@@ -47,11 +47,11 @@ class MainWindow(QMainWindow):
 
         self.open_act = QAction(QIcon("images/open_file.png"), "Відкрити")
         self.open_act.setShortcut("Ctrl+O")
-        # self.open_act.triggered.connect(self.openFile)
+        self.open_act.triggered.connect(self.openFile)
 
         self.save_act = QAction(QIcon("images/save_file.png"), "Зберегти")
         self.save_act.setShortcut("Ctrl+S")
-        # self.save_act.triggered.connect(self.saveToFile)
+        self.save_act.triggered.connect(self.saveToFile)
 
         self.undo_act = QAction(QIcon("images/undo.png"), "Скасувати")
         self.undo_act.setShortcut("Ctrl+Z")
@@ -132,6 +132,35 @@ class MainWindow(QMainWindow):
         )
         if answer == QMessageBox.StandardButton.Yes:
             self.text_edit.clear()
+
+    def openFile(self):
+        file_name, _ = QFileDialog.getOpenFileName(
+            self, "Відкрити файл", "", "Файли HTML (*.html);;Текстові файли (*.txt)"
+        )
+        if file_name:
+            with open(file_name, "r", encoding="UTF8") as f:
+                notepad_text = f.read()
+            self.text_edit.setText(notepad_text)
+
+    def saveToFile(self):
+        file_name, _ = QFileDialog.getSaveFileName(
+            self, "Зберегти файл", "", "Файли HTML (*.html);;Текстові файли (*.txt)"
+        )
+        if file_name.endswith(".txt"):
+            notepad_text = self.text_edit.toPlainText()
+            with open(file_name, "w", encoding="UTF8") as f:
+                f.write(notepad_text)
+        elif file_name.endswith(".html"):
+            notepad_text = self.text_edit.toHtml()
+            with open(file_name, "w", encoding="UTF8") as f:
+                f.write(notepad_text)
+        else:
+            QMessageBox.information(
+                self,
+                "Не збережено",
+                "Текст не збережено",
+                QMessageBox.StandardButton.Ok,
+            )
 
 
 # Запуск програми
