@@ -91,7 +91,7 @@ class MainWindow(QMainWindow):
         self.highlight_act.triggered.connect(self.chooseFontBackgroundColor)
 
         self.about_act = QAction("Про програму")
-        # self.about_act.connect(self.aboutDialog)
+        self.about_act.triggered.connect(self.aboutDialog)
 
     def createMenu(self):
         """Налаштування меню"""
@@ -195,6 +195,9 @@ class MainWindow(QMainWindow):
         color = QColorDialog.getColor()
         if color.isValid():
             self.text_edit.setTextBackgroundColor(color)
+
+    def aboutDialog(self):
+        QMessageBox.about(self, "Про програму", "PyQt Notepad")
 
 
 # Запуск програми
