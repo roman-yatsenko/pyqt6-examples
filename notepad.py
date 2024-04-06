@@ -33,6 +33,7 @@ class MainWindow(QMainWindow):
 
     def setUpMainWindow(self):
         self.text_edit = QTextEdit()
+        self.text_edit.textChanged.connect(self.removeHighlights)
         self.setCentralWidget(self.text_edit)
 
     def createActions(self):
@@ -75,19 +76,19 @@ class MainWindow(QMainWindow):
 
         self.find_act = QAction(QIcon("images/find.png"), "Пошук")
         self.find_act.setShortcut("Ctrl+F")
-        # self.find_act_act.triggered.connect(self.searchText)
+        self.find_act.triggered.connect(self.searchText)
 
         self.font_act = QAction(QIcon("images/font.png"), "Шрифт")
         self.font_act.setShortcut("Ctrl+T")
-        # self.font_act_act.triggered.connect(self.chooseFont)
+        # self.font_act.triggered.connect(self.chooseFont)
 
         self.color_act = QAction(QIcon("images/color.png"), "Колір")
         self.color_act.setShortcut("Ctrl+Shift+C")
-        # self.color_act_act.triggered.connect(self.chooseFontColor)
+        # self.color_act.triggered.connect(self.chooseFontColor)
 
         self.highlight_act = QAction(QIcon("images/highlight.png"), "Виділити")
         self.highlight_act.setShortcut("Ctrl+Shift+H")
-        # self.color_act_act.triggered.connect(self.chooseFontBackgroundColor)
+        # self.color_act.triggered.connect(self.chooseFontBackgroundColor)
 
         self.about_act = QAction("Про програму")
         # self.about_act.connect(self.aboutDialog)
@@ -161,6 +162,22 @@ class MainWindow(QMainWindow):
                 "Текст не збережено",
                 QMessageBox.StandardButton.Ok,
             )
+
+    def searchText(self):
+        find_text, ok = QInputDialog.getText(self, "Текст для пошуку", "Знайти:")
+        if ok:
+            extra_selections = []
+            self.text_edit.moveCursor(QTextCursor.MoveOperation.Start)
+            color = QColor(Qt.GlobalColor.gray)
+            while self.text_edit.find(find_text):
+                selection = QTextEdit.ExtraSelection()
+                selection.format.setBackground(color)
+                selection.cursor = self.text_edit.textCursor()
+                extra_selections.append(selection)
+            self.text_edit.setExtraSelections(extra_selections)
+
+    def removeHighlights(self):
+        self.text_edit.setExtraSelections([])
 
 
 # Запуск програми
