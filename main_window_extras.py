@@ -30,7 +30,7 @@ class MainWindow(QMainWindow):
         # self.createDockWidget()
         self.createActions()
         self.createMenu()
-        # self.createToolBar()
+        self.createToolBar()
         self.show()
 
     def setUpMainWindow(self):
@@ -41,8 +41,9 @@ class MainWindow(QMainWindow):
 
     def createActions(self):
         """Створення дій"""
-        self.quit_act = QAction("&Вихід")
+        self.quit_act = QAction(QIcon("images/exit.png"), "&Вихід")
         self.quit_act.setShortcut("Ctrl+Q")
+        self.quit_act.setStatusTip("Вихід з програми")
         self.quit_act.triggered.connect(self.close)
 
         self.full_screen_act = QAction("На весь екран", checkable=True)
@@ -65,6 +66,13 @@ class MainWindow(QMainWindow):
             self.showFullScreen()
         else:
             self.showNormal()
+
+    def createToolBar(self):
+        toolbar = QToolBar("Головна панель інструментів")
+        toolbar.setIconSize(QSize(16, 16))
+        self.addToolBar(toolbar)
+
+        toolbar.addAction(self.quit_act)
 
 
 # Запуск програми
