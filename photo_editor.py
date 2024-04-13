@@ -79,7 +79,7 @@ class MainWindow(QMainWindow):
         self.resize = QPushButton("Зменшити розмір вдвічі")
         self.resize.setMinimumSize(QSize(130, 40))
         self.resize.setStatusTip("Зменшення розміру зображення вдвічі")
-        # self.resize.clicked.connect(self.resizeImageHalf)
+        self.resize.clicked.connect(self.resizeImageHalf)
 
         dock_v_box = QVBoxLayout()
         dock_v_box.addWidget(self.rotate90)
@@ -144,7 +144,7 @@ class MainWindow(QMainWindow):
 
         self.resize_act = QAction("Зменшити розмір вдвічі")
         self.resize_act.setStatusTip("Зменшення розміру зображення вдвічі")
-        # self.resize_act.triggered.connect(self.resizeImageHalf)
+        self.resize_act.triggered.connect(self.resizeImageHalf)
 
         self.clear_act = QAction(QIcon("images/clear.png"), "Очистити зображення")
         self.clear_act.setStatusTip("Очистити поточне зображення")
@@ -286,6 +286,21 @@ class MainWindow(QMainWindow):
     def flipImageVertical(self):
         if not self.image.isNull():
             flip_v = QTransform().scale(1, -1)
+            pixmap = QPixmap(self.image)
+            flipped = pixmap.transformed(flip_v)
+            self.image_label.setPixmap(
+                flipped.scaled(
+                    self.image_label.size(),
+                    Qt.AspectRatioMode.KeepAspectRatio,
+                    Qt.TransformationMode.SmoothTransformation,
+                )
+            )
+            self.image = QPixmap(flipped)
+            self.image_label.repaint()
+
+    def resizeImageHalf(self):
+        if not self.image.isNull():
+            flip_v = QTransform().scale(0.5, 0.5)
             pixmap = QPixmap(self.image)
             flipped = pixmap.transformed(flip_v)
             self.image_label.setPixmap(
