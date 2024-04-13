@@ -46,7 +46,58 @@ class MainWindow(QMainWindow):
         self.setStatusBar(QStatusBar())
 
     def createToolsDockWidget(self):
-        pass
+        dock_widget = QDockWidget()
+        dock_widget.setWindowTitle("Редагування зображення")
+        dock_widget.setAllowedAreas(
+            Qt.DockWidgetArea.LeftDockWidgetArea | Qt.DockWidgetArea.RightDockWidgetArea
+        )
+
+        self.rotate90 = QPushButton("Повернути на 90°")
+        self.rotate90.setMinimumSize(QSize(130, 40))
+        self.rotate90.setStatusTip(
+            "Повернути зображення на 90° за годиниковою стрілкою"
+        )
+        # self.rotate90.clicked.connect(self.rotateImage90)
+
+        self.rotate180 = QPushButton("Повернути на 180°")
+        self.rotate180.setMinimumSize(QSize(130, 40))
+        self.rotate180.setStatusTip(
+            "Повернути зображення на 180° за годиниковою стрілкою"
+        )
+        # self.rotate180.clicked.connect(self.rotateImage180)
+
+        self.hor = QPushButton("Перевернути горизонтально")
+        self.hor.setMinimumSize(QSize(130, 40))
+        self.hor.setStatusTip("Перевернути зображення за горизонтальною віссю")
+        # self.hor.clicked.connect(self.flipImageHorizontal)
+
+        self.ver = QPushButton("Перевернути вертикально")
+        self.ver.setMinimumSize(QSize(130, 40))
+        self.ver.setStatusTip("Перевернути зображення за вертикальною віссю")
+        # self.ver.clicked.connect(self.flipImageVertical)
+
+        self.resize = QPushButton("Зменшити розмір вдвічі")
+        self.resize.setMinimumSize(QSize(130, 40))
+        self.resize.setStatusTip("Зменшення розміру зображення вдвічі")
+        # self.resize.clicked.connect(self.resizeImageHalf)
+
+        dock_v_box = QVBoxLayout()
+        dock_v_box.addWidget(self.rotate90)
+        dock_v_box.addWidget(self.rotate180)
+        dock_v_box.addStretch(1)
+        dock_v_box.addWidget(self.hor)
+        dock_v_box.addWidget(self.ver)
+        dock_v_box.addStretch(1)
+        dock_v_box.addWidget(self.resize)
+        dock_v_box.addStretch(10)
+
+        tools_container = QWidget()
+        tools_container.setLayout(dock_v_box)
+        dock_widget.setWidget(tools_container)
+
+        self.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, dock_widget)
+
+        self.toggle_doc_act = dock_widget.toggleViewAction()
 
     def createActions(self):
         """Створення дій"""
@@ -124,7 +175,7 @@ class MainWindow(QMainWindow):
         edit_menu.addAction(self.clear_act)
 
         view_menu = self.menuBar().addMenu("Перегляд")
-        # view_menu.addAction(self.toggle_dock_act)
+        view_menu.addAction(self.toggle_doc_act)
 
     def createToolBar(self):
         tool_bar = QToolBar("Панель інструментів фоторедактора")
