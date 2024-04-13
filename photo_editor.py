@@ -57,14 +57,14 @@ class MainWindow(QMainWindow):
         self.rotate90.setStatusTip(
             "Повернути зображення на 90° за годиниковою стрілкою"
         )
-        # self.rotate90.clicked.connect(self.rotateImage90)
+        self.rotate90.clicked.connect(self.rotateImage90)
 
         self.rotate180 = QPushButton("Повернути на 180°")
         self.rotate180.setMinimumSize(QSize(130, 40))
         self.rotate180.setStatusTip(
             "Повернути зображення на 180° за годиниковою стрілкою"
         )
-        # self.rotate180.clicked.connect(self.rotateImage180)
+        self.rotate180.clicked.connect(self.rotateImage180)
 
         self.hor = QPushButton("Перевернути горизонтально")
         self.hor.setMinimumSize(QSize(130, 40))
@@ -126,13 +126,13 @@ class MainWindow(QMainWindow):
         self.rotate90_act.setStatusTip(
             "Повернути зображення на 90° за годиниковою стрілкою"
         )
-        # self.rotate90_act.triggered.connect(self.rotateImage90)
+        self.rotate90_act.triggered.connect(self.rotateImage90)
 
         self.rotate180_act = QAction("Повернути на 180°")
         self.rotate180_act.setStatusTip(
             "Повернути зображення на 180° за годиниковою стрілкою"
         )
-        # self.rotate180_act.triggered.connect(self.rotateImage180)
+        self.rotate180_act.triggered.connect(self.rotateImage180)
 
         self.hor_act = QAction("Перевернути горизонтально")
         self.hor_act.setStatusTip("Перевернути зображення за горизонтальною віссю")
@@ -235,6 +235,38 @@ class MainWindow(QMainWindow):
         self.image_label.clear()
         self.image = QPixmap()
         self.print_act.setEnabled(False)
+
+    def rotateImage90(self):
+        if not self.image.isNull():
+            transform90 = QTransform().rotate(90)
+            pixmap = QPixmap(self.image)
+            mode = Qt.TransformationMode.SmoothTransformation
+            rotated = pixmap.transformed(transform90, mode)
+            self.image_label.setPixmap(
+                rotated.scaled(
+                    self.image_label.size(),
+                    Qt.AspectRatioMode.KeepAspectRatio,
+                    Qt.TransformationMode.SmoothTransformation,
+                )
+            )
+            self.image = QPixmap(rotated)
+            self.image_label.repaint()
+
+    def rotateImage180(self):
+        if not self.image.isNull():
+            transform90 = QTransform().rotate(180)
+            pixmap = QPixmap(self.image)
+            mode = Qt.TransformationMode.SmoothTransformation
+            rotated = pixmap.transformed(transform90, mode)
+            self.image_label.setPixmap(
+                rotated.scaled(
+                    self.image_label.size(),
+                    Qt.AspectRatioMode.KeepAspectRatio,
+                    Qt.TransformationMode.SmoothTransformation,
+                )
+            )
+            self.image = QPixmap(rotated)
+            self.image_label.repaint()
 
 
 # Запуск програми
