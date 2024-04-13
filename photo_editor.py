@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import (
     QLabel,
     QPushButton,
     QDockWidget,
-    QDialog,
+    QFileDialog,
     QMessageBox,
     QToolBar,
     QStatusBar,
@@ -109,12 +109,12 @@ class MainWindow(QMainWindow):
         self.open_act = QAction(QIcon("images/open_file.png"), "Відкрити")
         self.open_act.setShortcut("Ctrl+O")
         self.open_act.setStatusTip("Відкрити нове зображення")
-        # self.open_act.triggered.connect(self.openImage)
+        self.open_act.triggered.connect(self.openImage)
 
         self.save_act = QAction(QIcon("images/save_file.png"), "Зберегти")
         self.save_act.setShortcut("Ctrl+S")
         self.save_act.setStatusTip("Зберегти зображення")
-        # self.open_act.triggered.connect(self.saveImage)
+        self.save_act.triggered.connect(self.saveImage)
 
         self.print_act = QAction(QIcon("images/print.png"), "Друк")
         self.print_act.setShortcut("Ctrl+P")
@@ -188,6 +188,48 @@ class MainWindow(QMainWindow):
         tool_bar.addAction(self.clear_act)
         tool_bar.addSeparator()
         tool_bar.addAction(self.quit_act)
+
+    def openImage(self):
+        image_file, _ = QFileDialog.getOpenFileName(
+            self,
+            "Відкрити зображення",
+            "",
+            "Графічні файли (*.jpeg *.jpg *.png *.bmp *.gif)",
+        )
+        if image_file:
+            self.image = QPixmap(image_file)
+            self.image_label.setPixmap(
+                self.image.scaled(
+                    self.image_label.size(),
+                    Qt.AspectRatioMode.KeepAspectRatio,
+                    Qt.TransformationMode.SmoothTransformation,
+                )
+            )
+            self.print_act.setEnabled(True)
+        else:
+            QMessageBox.information(
+                self,
+                "Відсутнє зображення",
+                "Зображення не вибрано",
+                QMessageBox.StandardButton.Ok,
+            )
+
+    def saveImage(self):
+        image_file, _ = QFileDialog.getSaveFileName(
+            self,
+            "Зберегти зображення",
+            "",
+            "Графічні файли (*.jpeg *.jpg *.png *.bmp *.gif)",
+        )
+        if image_file and not self.image.isNull():
+            self.image.save(image_file)
+        else:
+            QMessageBox.information(
+                self,
+                "Не збережено",
+                "Зображення не збережено",
+                QMessageBox.StandardButton.Ok,
+            )
 
 
 # Запуск програми
