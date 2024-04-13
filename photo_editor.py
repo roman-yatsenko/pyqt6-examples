@@ -13,9 +13,11 @@ from PyQt6.QtWidgets import (
     QToolBar,
     QStatusBar,
     QVBoxLayout,
+    QDialog,
 )
 from PyQt6.QtCore import Qt, QSize, QRect
 from PyQt6.QtGui import QAction, QIcon, QPixmap, QTransform, QPainter
+from PyQt6.QtPrintSupport import QPrinter, QPrintDialog
 
 
 class MainWindow(QMainWindow):
@@ -119,7 +121,7 @@ class MainWindow(QMainWindow):
         self.print_act = QAction(QIcon("images/print.png"), "Друк")
         self.print_act.setShortcut("Ctrl+P")
         self.print_act.setStatusTip("Надрукувати зображення")
-        # self.print_act.triggered.connect(self.printImage)
+        self.print_act.triggered.connect(self.printImage)
         self.print_act.setEnabled(False)
 
         self.rotate90_act = QAction("Повернути на 90°")
@@ -312,6 +314,20 @@ class MainWindow(QMainWindow):
             )
             self.image = QPixmap(flipped)
             self.image_label.repaint()
+
+    def printImage(self):
+        printer = QPrinter()
+        print_dilaog = QPrintDialog(printer)
+        if print_dilaog.exec() == QDialog.DialogCode.Accepted:
+            painter = QPainter()
+            painter.begin(printer)
+            rect = QRect(painter.viewport())
+            size = QSize(self.image_label.pixmap().size())
+            size.scale(rect.size(), Qt.AspectRatioMode.KeepAspectRatio)
+            painter.setViewport(rect.x(), rect.y(), size.width(), size.height())
+            painter.setWindow(self.image_label.pixmap().rect())
+            painter.drawPixmap(0, 0, self.image_label.pixmap())
+            painter.end()
 
 
 # Запуск програми
