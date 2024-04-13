@@ -69,12 +69,12 @@ class MainWindow(QMainWindow):
         self.hor = QPushButton("Перевернути горизонтально")
         self.hor.setMinimumSize(QSize(130, 40))
         self.hor.setStatusTip("Перевернути зображення за горизонтальною віссю")
-        # self.hor.clicked.connect(self.flipImageHorizontal)
+        self.hor.clicked.connect(self.flipImageHorizontal)
 
         self.ver = QPushButton("Перевернути вертикально")
         self.ver.setMinimumSize(QSize(130, 40))
         self.ver.setStatusTip("Перевернути зображення за вертикальною віссю")
-        # self.ver.clicked.connect(self.flipImageVertical)
+        self.ver.clicked.connect(self.flipImageVertical)
 
         self.resize = QPushButton("Зменшити розмір вдвічі")
         self.resize.setMinimumSize(QSize(130, 40))
@@ -136,11 +136,11 @@ class MainWindow(QMainWindow):
 
         self.hor_act = QAction("Перевернути горизонтально")
         self.hor_act.setStatusTip("Перевернути зображення за горизонтальною віссю")
-        # self.hor_act.triggered.connect(self.flipImageHorizontal)
+        self.hor_act.triggered.connect(self.flipImageHorizontal)
 
         self.ver_act = QAction("Перевернути вертикально")
         self.ver_act.setStatusTip("Перевернути зображення за вертикальною віссю")
-        # self.ver_act.triggered.connect(self.flipImageVertical)
+        self.ver_act.triggered.connect(self.flipImageVertical)
 
         self.resize_act = QAction("Зменшити розмір вдвічі")
         self.resize_act.setStatusTip("Зменшення розміру зображення вдвічі")
@@ -266,6 +266,36 @@ class MainWindow(QMainWindow):
                 )
             )
             self.image = QPixmap(rotated)
+            self.image_label.repaint()
+
+    def flipImageHorizontal(self):
+        if not self.image.isNull():
+            flip_h = QTransform().scale(-1, 1)
+            pixmap = QPixmap(self.image)
+            flipped = pixmap.transformed(flip_h)
+            self.image_label.setPixmap(
+                flipped.scaled(
+                    self.image_label.size(),
+                    Qt.AspectRatioMode.KeepAspectRatio,
+                    Qt.TransformationMode.SmoothTransformation,
+                )
+            )
+            self.image = QPixmap(flipped)
+            self.image_label.repaint()
+
+    def flipImageVertical(self):
+        if not self.image.isNull():
+            flip_v = QTransform().scale(1, -1)
+            pixmap = QPixmap(self.image)
+            flipped = pixmap.transformed(flip_v)
+            self.image_label.setPixmap(
+                flipped.scaled(
+                    self.image_label.size(),
+                    Qt.AspectRatioMode.KeepAspectRatio,
+                    Qt.TransformationMode.SmoothTransformation,
+                )
+            )
+            self.image = QPixmap(flipped)
             self.image_label.repaint()
 
 
