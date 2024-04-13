@@ -149,7 +149,7 @@ class MainWindow(QMainWindow):
         self.clear_act = QAction(QIcon("images/clear.png"), "Очистити зображення")
         self.clear_act.setStatusTip("Очистити поточне зображення")
         self.clear_act.setShortcut("Ctrl+D")
-        # self.clear_act.triggered.connect(self.clearImage)
+        self.clear_act.triggered.connect(self.clearImage)
 
     def createMenu(self):
         """Налаштування меню"""
@@ -230,6 +230,11 @@ class MainWindow(QMainWindow):
                 "Зображення не збережено",
                 QMessageBox.StandardButton.Ok,
             )
+
+    def clearImage(self):
+        self.image_label.clear()
+        self.image = QPixmap()
+        self.print_act.setEnabled(False)
 
 
 # Запуск програми
